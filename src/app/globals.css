@@ -85,6 +85,11 @@ main {
   border-bottom: 1px solid rgba(226, 232, 240, 0.9);
 }
 
+.studio-inline-header {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
 .nav-row {
   display: flex;
   align-items: center;
@@ -93,10 +98,40 @@ main {
   min-height: 72px;
 }
 
+.studio-nav-row {
+  min-height: 86px;
+}
+
 .brand {
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.02em;
+}
+
+.brand-with-version {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-title {
+  font-size: clamp(26px, 3vw, 36px);
+  line-height: 1;
+}
+
+.version-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .nav-links {
@@ -376,6 +411,14 @@ main {
   margin-bottom: 22px;
 }
 
+.panel-header h2 {
+  font-size: 20px;
+}
+
+.preview-header-copy h2 {
+  font-size: 24px;
+}
+
 .field-block {
   display: grid;
   gap: 12px;
@@ -404,6 +447,10 @@ main {
   background: linear-gradient(180deg, rgba(239, 246, 255, 0.82), rgba(255, 255, 255, 0.86));
 }
 
+.upload-dropzone-compact {
+  padding: 18px 16px;
+}
+
 .upload-dropzone input {
   position: absolute;
   inset: 0;
@@ -421,7 +468,8 @@ main {
 .mini-empty,
 .stats-header p,
 .error-banner,
-.empty-state p {
+.empty-state p,
+.compare-caption {
   color: var(--muted);
 }
 
@@ -547,32 +595,46 @@ main {
   gap: 18px;
 }
 
-.preview-top-grid {
+.comparison-layout {
   display: grid;
-  grid-template-columns: minmax(260px, 300px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.1fr) 250px minmax(0, 1fr);
   gap: 18px;
+  align-items: stretch;
 }
 
-.source-card {
+.comparison-card,
+.comparison-center {
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.78);
+  padding: 18px;
   display: grid;
   gap: 14px;
-  padding: 18px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.76);
 }
 
-.source-card h3,
-.stats-header h3 {
-  font-size: 18px;
+.comparison-card-active {
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.14) inset;
 }
 
-.source-preview-image {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: contain;
-  border-radius: 16px;
-  background: linear-gradient(180deg, #eff6ff, #ffffff);
+.comparison-card-muted {
+  opacity: 0.82;
+}
+
+.comparison-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.comparison-center {
+  align-content: start;
+}
+
+.compare-caption {
+  text-align: center;
+  font-size: 13px;
 }
 
 .canvas-wrap {
@@ -580,6 +642,10 @@ main {
   border-radius: 16px;
   border: 1px solid rgba(148, 163, 184, 0.22);
   background: #ffffff;
+}
+
+.preview-frame {
+  min-height: 320px;
 }
 
 .preview-canvas {
@@ -644,7 +710,7 @@ main {
 @media (max-width: 1080px) {
   .hero-grid,
   .studio-layout,
-  .preview-top-grid,
+  .comparison-layout,
   .feature-grid,
   .step-list,
   .summary-grid,
@@ -665,6 +731,10 @@ main {
 
   .download-button {
     width: 100%;
+  }
+
+  .comparison-center {
+    order: -1;
   }
 }
 
@@ -700,8 +770,8 @@ main {
     width: min(100vw - 24px, 1180px);
   }
 
-  .hero-title {
-    font-size: 36px;
+  .brand-title {
+    font-size: 24px;
   }
 
   .custom-grid {

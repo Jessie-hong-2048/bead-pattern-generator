@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "拼豆配色图生成器",
+  title: "拼豆图片生成",
   description: "上传图片，一键生成支持颜色编号和用量统计的拼豆网格图。",
 };
 
