@@ -90,7 +90,7 @@ export async function exportPatternImage(pattern: GeneratedPattern): Promise<Blo
   const context = canvas.getContext("2d");
 
   if (!context) {
-    throw new Error("???????? PNG?");
+    throw new Error("浏览器不支持导出 PNG。");
   }
 
   context.fillStyle = "#ffffff";
@@ -98,12 +98,12 @@ export async function exportPatternImage(pattern: GeneratedPattern): Promise<Blo
 
   context.fillStyle = "#0f172a";
   context.font = "700 36px sans-serif";
-  context.fillText("???????", padding, 56);
+  context.fillText("拼豆配色网格图", padding, 56);
 
   context.fillStyle = "#475569";
   context.font = "20px sans-serif";
   context.fillText(
-    `???${pattern.sourceName}    ???${pattern.width} ? ${pattern.height}    ???${pattern.ratioLabel}    ????${pattern.totalBeads}`,
+    `来源：${pattern.sourceName}    尺寸：${pattern.width} × ${pattern.height}    比例：${pattern.ratioLabel}    总颗数：${pattern.totalBeads}`,
     padding,
     92,
   );
@@ -134,7 +134,7 @@ export async function exportPatternImage(pattern: GeneratedPattern): Promise<Blo
   context.textBaseline = "alphabetic";
   context.fillStyle = "#0f172a";
   context.font = "700 24px sans-serif";
-  context.fillText(`?????? ${pattern.counts.length} ??`, padding, legendTop);
+  context.fillText(`颜色统计（共 ${pattern.counts.length} 种）`, padding, legendTop);
 
   context.font = "18px sans-serif";
   pattern.counts.forEach((item, index) => {
@@ -157,7 +157,7 @@ export async function exportPatternImage(pattern: GeneratedPattern): Promise<Blo
       if (blob) {
         resolve(blob);
       } else {
-        reject(new Error("???????????"));
+        reject(new Error("导出失败，请稍后重试。"));
       }
     }, "image/png");
   });

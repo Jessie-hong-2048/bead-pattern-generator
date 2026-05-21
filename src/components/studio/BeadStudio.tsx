@@ -6,7 +6,7 @@ import { generatePattern, type SourceImage } from "@/lib/bead/generate";
 import type { GeneratedPattern, RatioPreset, SizeMode } from "@/types/bead";
 
 const ratioOptions: { label: string; value: RatioPreset }[] = [
-  { label: "??", value: "original" },
+  { label: "原始", value: "original" },
   { label: "1:1", value: "1:1" },
   { label: "4:5", value: "4:5" },
   { label: "3:4", value: "3:4" },
@@ -40,7 +40,7 @@ async function loadImageElement(file: File): Promise<SourceImage> {
       URL.revokeObjectURL(url);
     };
     image.onerror = () => {
-      reject(new Error("???????????"));
+      reject(new Error("图片加载失败，请重试。"));
       URL.revokeObjectURL(url);
     };
     image.src = url;
@@ -103,9 +103,9 @@ export function BeadStudio() {
     };
   }, [pattern]);
 
-  const previewTitle = previewMode === "pattern" ? "????" : "????";
-  const compareButtonLabel = previewMode === "pattern" ? "??????" : "??????";
-  const previewDescription = previewMode === "pattern" ? "????????????" : "?????????";
+  const previewTitle = previewMode === "pattern" ? "生成结果" : "上传原图";
+  const compareButtonLabel = previewMode === "pattern" ? "切换查看原图" : "切换查看结果";
+  const previewDescription = previewMode === "pattern" ? "自动降采样后的拼豆网格图" : "用于对照的原始图片";
 
   const runGenerate = useCallback(async () => {
     if (!source) {
@@ -113,7 +113,7 @@ export function BeadStudio() {
     }
 
     if (sizeMode === "custom" && (customWidth < 8 || customHeight < 8)) {
-      setError("????????? 8 ??");
+      setError("自定义尺寸不能小于 8 格。");
       return;
     }
 
@@ -136,7 +136,7 @@ export function BeadStudio() {
         setPattern(nextPattern);
       }
     } catch (generationError) {
-      const message = generationError instanceof Error ? generationError.message : "???????????";
+      const message = generationError instanceof Error ? generationError.message : "生成失败，请稍后再试。";
       setError(message);
     } finally {
       if (generationIdRef.current === currentId) {
@@ -169,7 +169,7 @@ export function BeadStudio() {
       }
 
       if (!file.type.startsWith("image/")) {
-        setError("????????");
+        setError("请选择图片文件。");
         return;
       }
 
@@ -195,7 +195,7 @@ export function BeadStudio() {
         setCustomWidth(48);
         setCustomHeight(48);
       } catch (loadError) {
-        const message = loadError instanceof Error ? loadError.message : "???????";
+        const message = loadError instanceof Error ? loadError.message : "图片加载失败。";
         setError(message);
         setIsGenerating(false);
       }
@@ -239,7 +239,7 @@ export function BeadStudio() {
       link.click();
       URL.revokeObjectURL(url);
     } catch (downloadError) {
-      const message = downloadError instanceof Error ? downloadError.message : "???????????";
+      const message = downloadError instanceof Error ? downloadError.message : "下载失败，请稍后再试。";
       setError(message);
     } finally {
       setIsDownloading(false);
@@ -252,7 +252,7 @@ export function BeadStudio() {
         <header className="site-header studio-inline-header">
           <div className="nav-row studio-nav-row">
             <div className="brand brand-with-version">
-              <span className="brand-title">??????</span>
+              <span className="brand-title">拼豆图片生成</span>
               <span className="version-badge">V1.0</span>
             </div>
           </div>
@@ -261,11 +261,11 @@ export function BeadStudio() {
         <div className="studio-layout">
           <aside className="panel surface-card control-panel">
             <div className="panel-header">
-              <h2>????</h2>
+              <h2>参数设置</h2>
             </div>
 
             <div className="field-block">
-              <label className="field-label">????</label>
+              <label className="field-label">图片比例</label>
               <div className="chip-row">
                 {ratioOptions.map((option) => (
                   <button
@@ -282,21 +282,21 @@ export function BeadStudio() {
 
             <div className="field-block">
               <div className="field-label with-inline-actions">
-                <span>????</span>
+                <span>成品尺寸</span>
                 <div className="mode-switch">
                   <button
                     type="button"
                     className={`mode-button ${sizeMode === "preset" ? "mode-button-active" : ""}`}
                     onClick={() => setSizeMode("preset")}
                   >
-                    ??
+                    预设
                   </button>
                   <button
                     type="button"
                     className={`mode-button ${sizeMode === "custom" ? "mode-button-active" : ""}`}
                     onClick={() => setSizeMode("custom")}
                   >
-                    ???
+                    自定义
                   </button>
                 </div>
               </div>
@@ -310,14 +310,14 @@ export function BeadStudio() {
                       className={`chip ${presetLongEdge === size ? "chip-active" : ""}`}
                       onClick={() => setPresetLongEdge(size)}
                     >
-                      ?? {size}
+                      长边 {size}
                     </button>
                   ))}
                 </div>
               ) : (
                 <div className="custom-grid">
                   <label>
-                    <span>??</span>
+                    <span>宽度</span>
                     <input
                       type="number"
                       min={8}
@@ -327,7 +327,7 @@ export function BeadStudio() {
                     />
                   </label>
                   <label>
-                    <span>??</span>
+                    <span>高度</span>
                     <input
                       type="number"
                       min={8}
@@ -341,15 +341,15 @@ export function BeadStudio() {
             </div>
 
             <div className="field-block">
-              <label className="field-label">????</label>
+              <label className="field-label">输出内容</label>
               <div className="toggle-list">
                 <label className="toggle-item">
                   <input type="checkbox" checked={showGrid} onChange={() => setShowGrid((value) => !value)} />
-                  <span>????</span>
+                  <span>显示网格</span>
                 </label>
                 <label className="toggle-item">
                   <input type="checkbox" checked={showCodes} onChange={() => setShowCodes((value) => !value)} />
-                  <span>??????</span>
+                  <span>显示颜色编号</span>
                 </label>
               </div>
             </div>
@@ -361,10 +361,10 @@ export function BeadStudio() {
                 disabled={!canGenerate || isGenerating}
                 onClick={() => void runGenerate()}
               >
-                {isGenerating ? "???..." : "????"}
+                {isGenerating ? "生成中..." : "重新生成"}
               </button>
               <button type="button" className="secondary-button action-button" onClick={handleReset}>
-                ??
+                重置
               </button>
             </div>
           </aside>
@@ -380,7 +380,7 @@ export function BeadStudio() {
                 onClick={() => void handleDownload()}
                 disabled={!pattern || isDownloading}
               >
-                {isDownloading ? "???..." : "?? PNG"}
+                {isDownloading ? "下载中..." : "下载 PNG"}
               </button>
             </div>
 
@@ -388,8 +388,8 @@ export function BeadStudio() {
 
             {!source ? (
               <div className="empty-state">
-                <h3>????????</h3>
-                <p>??????????????????????????</p>
+                <h3>请先上传一张图片</h3>
+                <p>上传后即可自动生成拼豆网格图，并在右侧进行原图对比。</p>
               </div>
             ) : (
               <div className="preview-stack">
@@ -398,23 +398,23 @@ export function BeadStudio() {
                     className={`comparison-card ${previewMode === "pattern" ? "comparison-card-active" : "comparison-card-muted"}`}
                   >
                     <div className="comparison-card-head">
-                      <span>????</span>
-                      <span>{pattern ? patternSummary?.sizeLabel : "???"}</span>
+                      <span>生成结果</span>
+                      <span>{pattern ? patternSummary?.sizeLabel : "生成中"}</span>
                     </div>
                     {pattern ? (
                       <div className="canvas-wrap preview-frame">
                         <canvas ref={previewCanvasRef} className="preview-canvas" />
                       </div>
                     ) : (
-                      <div className="mini-empty">??????...</div>
+                      <div className="mini-empty">正在生成结果...</div>
                     )}
                   </article>
 
                   <aside className="comparison-center">
                     <label className="upload-dropzone upload-dropzone-compact">
                       <input type="file" accept="image/*" onChange={handleFileChange} />
-                      <span className="upload-title">?????</span>
-                      <span className="upload-caption">?? JPG / PNG / WebP</span>
+                      <span className="upload-title">上传新图片</span>
+                      <span className="upload-caption">支持 JPG / PNG / WebP</span>
                     </label>
 
                     {sourceFileMeta ? (
@@ -440,12 +440,12 @@ export function BeadStudio() {
                     className={`comparison-card ${previewMode === "source" ? "comparison-card-active" : "comparison-card-muted"}`}
                   >
                     <div className="comparison-card-head">
-                      <span>??</span>
-                      <span>{sourceFileMeta?.name ?? "????"}</span>
+                      <span>原图</span>
+                      <span>{sourceFileMeta?.name ?? "图片预览"}</span>
                     </div>
                     <div className="preview-image-frame preview-frame">
                       {sourcePreviewUrl ? (
-                        <img src={sourcePreviewUrl} alt="??????" className="source-preview-image" />
+                        <img src={sourcePreviewUrl} alt="上传图片预览" className="source-preview-image" />
                       ) : null}
                     </div>
                   </article>
@@ -454,19 +454,19 @@ export function BeadStudio() {
                 {patternSummary ? (
                   <div className="summary-grid">
                     <article className="summary-card">
-                      <span>????</span>
+                      <span>成品尺寸</span>
                       <strong>{patternSummary.sizeLabel}</strong>
                     </article>
                     <article className="summary-card">
-                      <span>????</span>
+                      <span>颜色数量</span>
                       <strong>{patternSummary.totalColors} ?</strong>
                     </article>
                     <article className="summary-card">
-                      <span>???</span>
+                      <span>总用量</span>
                       <strong>{patternSummary.totalBeads} ?</strong>
                     </article>
                     <article className="summary-card">
-                      <span>????</span>
+                      <span>比例模式</span>
                       <strong>{pattern?.ratioLabel}</strong>
                     </article>
                   </div>
@@ -475,8 +475,8 @@ export function BeadStudio() {
                 {pattern ? (
                   <div className="stats-card">
                     <div className="stats-header">
-                      <h3>???????</h3>
-                      <p>????????????????</p>
+                      <h3>颜色编号与用量</h3>
+                      <p>下载内容仅包含网格图和统计信息。</p>
                     </div>
                     <div className="stats-grid">
                       {pattern.counts.map((item) => (
