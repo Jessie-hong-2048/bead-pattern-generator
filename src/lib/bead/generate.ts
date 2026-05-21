@@ -52,14 +52,14 @@ function computeDimensions(
     return {
       width: presetLongEdge,
       height: Math.max(1, Math.round(presetLongEdge / aspect)),
-      ratioLabel: ratio === "original" ? "原图比例" : ratio,
+      ratioLabel: ratio === "original" ? "????" : ratio,
     };
   }
 
   return {
     width: Math.max(1, Math.round(presetLongEdge * aspect)),
     height: presetLongEdge,
-    ratioLabel: ratio === "original" ? "原图比例" : ratio,
+    ratioLabel: ratio === "original" ? "????" : ratio,
   };
 }
 
@@ -131,7 +131,7 @@ export function generatePattern(options: GeneratePatternOptions): GeneratedPatte
   const context = canvas.getContext("2d", { willReadFrequently: true });
 
   if (!context) {
-    throw new Error("浏览器不支持 Canvas 处理。");
+    throw new Error("?????? Canvas ???");
   }
 
   context.imageSmoothingEnabled = true;

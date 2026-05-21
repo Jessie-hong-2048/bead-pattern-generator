@@ -90,7 +90,7 @@ export async function exportPatternImage(pattern: GeneratedPattern): Promise<Blo
   const context = canvas.getContext("2d");
 
   if (!context) {
-    throw new Error("浏览器不支持导出 PNG。");
+    throw new Error("???????? PNG?");
   }
 
   context.fillStyle = "#ffffff";
@@ -98,12 +98,12 @@ export async function exportPatternImage(pattern: GeneratedPattern): Promise<Blo
 
   context.fillStyle = "#0f172a";
   context.font = "700 36px sans-serif";
-  context.fillText("拼豆配色网格图", padding, 56);
+  context.fillText("???????", padding, 56);
 
   context.fillStyle = "#475569";
   context.font = "20px sans-serif";
   context.fillText(
-    `来源：${pattern.sourceName}    尺寸：${pattern.width} × ${pattern.height}    比例：${pattern.ratioLabel}    总颗数：${pattern.totalBeads}`,
+    `???${pattern.sourceName}    ???${pattern.width} ? ${pattern.height}    ???${pattern.ratioLabel}    ????${pattern.totalBeads}`,
     padding,
     92,
   );
@@ -134,7 +134,7 @@ export async function exportPatternImage(pattern: GeneratedPattern): Promise<Blo
   context.textBaseline = "alphabetic";
   context.fillStyle = "#0f172a";
   context.font = "700 24px sans-serif";
-  context.fillText(`颜色统计（共 ${pattern.counts.length} 种）`, padding, legendTop);
+  context.fillText(`?????? ${pattern.counts.length} ??`, padding, legendTop);
 
   context.font = "18px sans-serif";
   pattern.counts.forEach((item, index) => {
@@ -149,7 +149,7 @@ export async function exportPatternImage(pattern: GeneratedPattern): Promise<Blo
     context.strokeRect(left, top, 26, 26);
 
     context.fillStyle = "#0f172a";
-    context.fillText(`${item.color.code} · ${item.color.name} · ${item.count} 颗`, left + 40, top + 19);
+    context.fillText(`${item.color.code} ? ${item.color.name} ? ${item.count} ?`, left + 40, top + 19);
   });
 
   return new Promise<Blob>((resolve, reject) => {
@@ -157,7 +157,7 @@ export async function exportPatternImage(pattern: GeneratedPattern): Promise<Blo
       if (blob) {
         resolve(blob);
       } else {
-        reject(new Error("导出失败，请稍后重试。"));
+        reject(new Error("???????????"));
       }
     }, "image/png");
   });
